@@ -9,6 +9,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ChapterVideoForm } from "@/components/forms/ChapterVideoForm";
 import { Banner } from "@/components/Banner";
+import ChapterActions from "@/components/actionsComponents/ChapterActions";
 
 interface ChapterPageProps {
   params: {

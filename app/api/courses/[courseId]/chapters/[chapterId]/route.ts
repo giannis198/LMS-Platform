@@ -9,6 +9,51 @@ const { Video } = new Mux(
   process.env.MUX_TOKEN_SECRET!
 );
 
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { courseId: string; chapterId: string } }
+) {
+  try {
+    const { userId } = auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+
+    if (!params.courseId) {
+      return new NextResponse("CourseID is required", { status: 400 });
+    }
+
+    if (!params.chapterId) {
+      return new NextResponse("ChapterID is required", { status: 400 });
+    }
+
+    const courseByUserId = await db.course.findFirst({
+      where: {
+        id: params.courseId,
+        userId: userId,
+      },
+    });
+
+    if (!courseByUserId) {
+      return new NextResponse("Unauthorized Action", { status: 401 });
+    }
+
+    const chapter = await db.chapter.deleteMany({
+      where: {
+        courseId: params.courseId,
+        id: params.chapterId,
+      },
+    });
+
+    return NextResponse.json(chapter);
+  } catch (error) {
+    console.log("[CHAPTER_DELETE]", error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+
 export async function PATCH(
   req: Request,
   { params }: { params: { courseId: string; chapterId: string } }
