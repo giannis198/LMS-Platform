@@ -7,30 +7,30 @@ import { Trash } from "lucide-react";
 import { ConfirmModal } from "../modals/ConfirmModal";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useConfettiStore } from "@/hooks/use-confetti-store";
 
-interface ChapterActionsProps {
+interface CourseActionsProps {
   disabled: boolean;
   courseId: string;
-  chapterId: string;
   isPublished: boolean;
 }
 
-const ChapterActions = ({
+const CourseActions = ({
   disabled,
   courseId,
-  chapterId,
   isPublished,
-}: ChapterActionsProps) => {
+}: CourseActionsProps) => {
   const router = useRouter();
+  const confetti = useConfettiStore()
   const [isLoading, setIsLoading] = useState(false);
 
   const onDelete = async (id: string) => {
     try {
       setIsLoading(true);
-      await axios.delete(`/api/courses/${courseId}/chapters/${id}`);
-      toast.success("Chapter deleted");
+      await axios.delete(`/api/courses/${id}`);
+      toast.success("Course deleted");
       router.refresh();
-      router.push(`/teacher/courses/${courseId}`);
+      router.push(`/teacher/courses`);
     } catch {
       toast.error("Something went wrong");
     } finally {
@@ -42,15 +42,12 @@ const ChapterActions = ({
     try {
       setIsLoading(true);
       if (isPublished) {
-        await axios.patch(
-          `/api/courses/${courseId}/chapters/${chapterId}/unpublish`
-        );
-        toast.success("Chapter unpublished");
+        await axios.patch(`/api/courses/${courseId}/unpublish`);
+        toast.success("Course unpublished");
       } else {
-        await axios.patch(
-          `/api/courses/${courseId}/chapters/${chapterId}/publish`
-        );
-        toast.success("Chapter published");
+        await axios.patch(`/api/courses/${courseId}/publish`);
+        toast.success("Course published");
+        confetti.onOpen()
       }
       router.refresh();
       router.push(`/teacher/courses/${courseId}`);
@@ -71,7 +68,7 @@ const ChapterActions = ({
       >
         {isPublished ? "Unpublish" : "Publish"}
       </Button>
-      <ConfirmModal onConfirm={() => onDelete(chapterId)}>
+      <ConfirmModal onConfirm={() => onDelete(courseId)}>
         <Button variant="destructive" size="sm" disabled={isLoading}>
           <Trash className="h-4 w-4" />
         </Button>
@@ -80,4 +77,4 @@ const ChapterActions = ({
   );
 };
 
-export default ChapterActions;
+export default CourseActions;

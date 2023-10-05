@@ -8,6 +8,7 @@ import { Pencil } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 import {
   Form,
@@ -58,10 +59,22 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
+    <div
+      className={cn(
+        "mt-6 border bg-green-100 rounded-md p-4",
+        !initialData.title && "bg-slate-100"
+      )}
+    >
       <div className="font-medium flex items-center justify-between">
         Course title
-        <Button onClick={toggleEdit} variant="ghost">
+        <Button
+          onClick={toggleEdit}
+          variant="ghost"
+          className={cn(
+            "hover:bg-green-200",
+            !initialData.title && "hover:bg-slate-200"
+          )}
+        >
           {isEditing ? (
             <>Cancel</>
           ) : (

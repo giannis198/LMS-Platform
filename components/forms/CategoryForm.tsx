@@ -70,10 +70,22 @@ export const CategoryForm = ({
   );
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
+    <div
+      className={cn(
+        "mt-6 border bg-green-100 rounded-md p-4",
+        !initialData.categoryId && "bg-slate-100"
+      )}
+    >
       <div className="font-medium flex items-center justify-between">
         Course category
-        <Button onClick={toggleEdit} variant="ghost">
+        <Button
+          onClick={toggleEdit}
+          variant="ghost"
+          className={cn(
+            "hover:bg-green-200",
+            !initialData.categoryId && "hover:bg-slate-200"
+          )}
+        >
           {isEditing ? (
             <>Cancel</>
           ) : (
@@ -106,10 +118,7 @@ export const CategoryForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Combobox
-                    options={...options}
-                    {...field}
-                    />
+                    <Combobox options={...options} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

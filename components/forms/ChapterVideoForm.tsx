@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Chapter, MuxData } from "@prisma/client";
 import { FileUpload } from "../FileUpload";
+import { cn } from "@/lib/utils";
 
 interface ChapterVideoFormProps {
   initialData: Chapter & { muxData?: MuxData | null };
@@ -50,10 +51,22 @@ export const ChapterVideoForm = ({
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
+    <div
+      className={cn(
+        "mt-6 border bg-green-100 rounded-md p-4",
+        !initialData.videoUrl && "bg-slate-100"
+      )}
+    >
       <div className="font-medium flex items-center justify-between">
         Chapter Video
-        <Button onClick={toggleEdit} variant="ghost">
+        <Button
+          onClick={toggleEdit}
+          variant="ghost"
+          className={cn(
+            "mb-1 hover:bg-green-200",
+            !initialData.videoUrl && "hover:bg-slate-200"
+          )}
+        >
           {isEditing && <>Cancel</>}
           {!isEditing && !initialData.videoUrl && (
             <>

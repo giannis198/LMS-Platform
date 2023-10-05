@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface ChapterTitleFormProps {
   initialData: {
@@ -66,10 +67,22 @@ export const ChapterTitleForm = ({
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
+    <div
+      className={cn(
+        "mt-6 border bg-green-100 rounded-md p-4",
+        !initialData.title && "bg-slate-100"
+      )}
+    >
       <div className="font-medium flex items-center justify-between">
         Chapter title
-        <Button onClick={toggleEdit} variant="ghost">
+        <Button
+          onClick={toggleEdit}
+          variant="ghost"
+          className={cn(
+            "hover:bg-green-200",
+            !initialData.title && "hover:bg-slate-200"
+          )}
+        >
           {isEditing ? (
             <>Cancel</>
           ) : (

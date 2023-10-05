@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 import { Chapter, Course } from "@prisma/client";
 import { Input } from "../ui/input";
 import ChaptersList from "../lists/ChaptersList";
+import { channel } from "diagnostics_channel";
 
 interface ChaptersFormProps {
   initialData: Course & { chapters: Chapter[] };
@@ -62,9 +63,9 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 
   const onReorder = async (updateData: { id: string; position: number }[]) => {
     try {
-      setIsUpdating(true)
-      await axios.put(`/api/courses/${courseId}/chapters/reorder`,{
-        list: updateData
+      setIsUpdating(true);
+      await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
+        list: updateData,
       });
       toast.success("Chapters reordered");
       router.refresh();
@@ -76,21 +77,41 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
   };
 
   const onEdit = (id: string) => {
-    router.push(`/teacher/courses/${courseId}/chapters/${id}`)
+    router.push(`/teacher/courses/${courseId}/chapters/${id}`);
+  };
 
-  }
+const publishedChapters = initialData.chapters.filter(
+  (chapter) => chapter.isPublished === true
+).length;
+
+
+
+
 
   return (
-    <div className="relative mt-6 border bg-slate-100 rounded-md p-4">
+    <div
+      className={cn(
+        " relative mt-6 border bg-slate-100 rounded-md p-4",
+        publishedChapters > 0 &&
+          "bg-green-100"
+      )}
+    >
       {isUpdating && (
         <div className="absolute h-full w-full bg-slate-500/20 top-0 right-0 rounded-md flex items-center justify-center ">
           <Loader2 className="animate-spin h-6 w-6 text-sky-700" />
         </div>
-        
       )}
       <div className="font-medium flex items-center justify-between">
         Course chapters
-        <Button onClick={toggleCreating} variant="ghost">
+        <Button
+          onClick={toggleCreating}
+          variant="ghost"
+          className={cn(
+            "hover:bg-green-200",
+            initialData.chapters.map((chapter) => chapter.isPublished) &&
+              "hover:bg-slate-100"
+          )}
+        >
           {isCreating ? (
             <>Cancel</>
           ) : (
@@ -147,6 +168,12 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
       {!isCreating && (
         <p className="text-xs text-muted-foreground mt-4">
           Drag and Drop to reorder the Chapters
+        </p>
+      )}
+      {!isCreating && (
+        <p className="text-xs text-muted-foreground mt-4">
+          Published Chapters{" "}
+          {`${publishedChapters}/${initialData.chapters.length}`}
         </p>
       )}
     </div>

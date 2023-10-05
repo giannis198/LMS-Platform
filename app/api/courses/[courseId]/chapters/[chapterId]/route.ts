@@ -9,7 +9,6 @@ const { Video } = new Mux(
   process.env.MUX_TOKEN_SECRET!
 );
 
-
 export async function DELETE(
   req: Request,
   { params }: { params: { courseId: string; chapterId: string } }
@@ -40,14 +39,60 @@ export async function DELETE(
       return new NextResponse("Unauthorized Action", { status: 401 });
     }
 
-    const chapter = await db.chapter.deleteMany({
+    const chapter = await db.chapter.findUnique({
       where: {
         courseId: params.courseId,
         id: params.chapterId,
       },
     });
 
-    return NextResponse.json(chapter);
+    if (!chapter) {
+      return new NextResponse("Chapter is required", { status: 400 });
+    }
+
+    if (chapter.videoUrl) {
+      const existingMuxData = await db.muxData.findFirst({
+        where: {
+          chapterId: params.chapterId,
+        },
+      });
+
+      if (existingMuxData) {
+        await Video.Assets.del(existingMuxData.assetId);
+        await db.muxData.delete({
+          where: {
+            id: existingMuxData.id,
+          },
+        });
+      }
+    }
+
+    const chapterToDelete = await db.chapter.delete({
+      where: {
+        id: chapter.id,
+        courseId: chapter.courseId,
+      },
+    });
+
+    const publishedChaptersInCourse = await db.chapter.findMany({
+      where: {
+        courseId: chapterToDelete.courseId,
+        isPublished: true,
+      },
+    });
+
+    if (!publishedChaptersInCourse.length) {
+      await db.course.update({
+        where: {
+          id: params.courseId,
+        },
+        data: {
+          isPublished: false,
+        },
+      });
+    }
+
+    return NextResponse.json(chapterToDelete);
   } catch (error) {
     console.log("[CHAPTER_DELETE]", error);
     return new NextResponse("Internal error", { status: 500 });
@@ -116,16 +161,16 @@ export async function PATCH(
       const asset = await Video.Assets.create({
         input: values.videoUrl,
         playback_policy: "public",
-        test: false
-      })
+        test: false,
+      });
 
       await db.muxData.create({
         data: {
           chapterId: params.chapterId,
           assetId: asset.id,
-          playbackId: asset.playback_ids?.[0]?.id
-        }
-      })
+          playbackId: asset.playback_ids?.[0]?.id,
+        },
+      });
     }
 
     return NextResponse.json(chapter);

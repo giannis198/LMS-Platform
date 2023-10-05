@@ -61,10 +61,22 @@ export const PriceForm = ({ initialData, courseId }: PriceFormProps) => {
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
+    <div
+      className={cn(
+        "mt-6 border bg-green-100 rounded-md p-4",
+        !initialData.price && "bg-slate-100"
+      )}
+    >
       <div className="font-medium flex items-center justify-between">
         Course price
-        <Button onClick={toggleEdit} variant="ghost">
+        <Button
+          onClick={toggleEdit}
+          variant="ghost"
+          className={cn(
+            "hover:bg-green-200",
+            !initialData.price && "hover:bg-slate-200"
+          )}
+        >
           {isEditing ? (
             <>Cancel</>
           ) : (

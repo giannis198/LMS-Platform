@@ -68,10 +68,22 @@ export const ChapterAccessForm = ({
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
+    <div
+      className={cn(
+        "mt-6 border bg-green-100 rounded-md p-4",
+        !initialData.isFree && "bg-rose-100"
+      )}
+    >
       <div className="font-medium flex items-center justify-between">
         Chapter Access
-        <Button onClick={toggleEdit} variant="ghost">
+        <Button
+          onClick={toggleEdit}
+          variant="ghost"
+          className={cn(
+            "hover:bg-green-200",
+            !initialData.isFree && "hover:bg-rose-200"
+          )}
+        >
           {isEditing ? (
             <>Cancel</>
           ) : (
@@ -106,7 +118,7 @@ export const ChapterAccessForm = ({
               control={form.control}
               name="isFree"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 ">
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md  p-4 ">
                   <FormControl>
                     <Checkbox
                       checked={field.value}

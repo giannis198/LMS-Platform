@@ -67,10 +67,22 @@ export const ChapterDescriptionForm = ({
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
+    <div
+      className={cn(
+        "mt-6 border bg-green-100 rounded-md p-4",
+        !initialData.description && "bg-slate-100"
+      )}
+    >
       <div className="font-medium flex items-center justify-between">
         Chapter Description
-        <Button onClick={toggleEdit} variant="ghost">
+        <Button
+          onClick={toggleEdit}
+          variant="ghost"
+          className={cn(
+            "hover:bg-green-200",
+            !initialData.description && "hover:bg-slate-200"
+          )}
+        >
           {isEditing ? (
             <>Cancel</>
           ) : (
@@ -90,9 +102,7 @@ export const ChapterDescriptionForm = ({
         >
           {!initialData.description && "No description"}
           {initialData.description && (
-            <Preview
-            value={initialData.description}
-            /> 
+            <Preview value={initialData.description} />
           )}
         </div>
       )}
@@ -108,10 +118,7 @@ export const ChapterDescriptionForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Editor
-
-                      {...field}
-                    />
+                    <Editor {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

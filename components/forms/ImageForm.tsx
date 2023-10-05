@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Course } from "@prisma/client";
 import Image from "next/image";
 import { FileUpload } from "../FileUpload";
+import { cn } from "@/lib/utils";
 
 interface ImageFormProps {
   initialData: Course;
@@ -42,10 +43,22 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 rounded-md p-4">
+    <div
+      className={cn(
+        "mt-6 border bg-green-100 rounded-md p-4",
+        !initialData.imageUrl && "bg-slate-100"
+      )}
+    >
       <div className="font-medium flex items-center justify-between">
         Course Image
-        <Button onClick={toggleEdit} variant="ghost">
+        <Button
+          onClick={toggleEdit}
+          variant="ghost"
+          className={cn(
+            "mb-1 hover:bg-green-200",
+            !initialData.imageUrl && "hover:bg-slate-200"
+          )}
+        >
           {isEditing && <>Cancel</>}
           {!isEditing && !initialData.imageUrl && (
             <>
