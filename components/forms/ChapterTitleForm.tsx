@@ -37,7 +37,7 @@ const formSchema = z.object({
 export const ChapterTitleForm = ({
   initialData,
   courseId,
-  chapterId
+  chapterId,
 }: ChapterTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 

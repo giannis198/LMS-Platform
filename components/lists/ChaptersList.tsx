@@ -53,7 +53,6 @@ const ChaptersList = ({ onEdit, onReorder, items }: ChaptersListProps) => {
     onReorder(bulkUpdateData);
   };
 
-
   if (!isMounted) return null;
 
   return (

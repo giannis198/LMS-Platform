@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch","fullTextIndex"]
 }
 
 datasource db {
@@ -31,6 +32,7 @@ model Course {
   updatedAt   DateTime @updatedAt
 
   @@index([categoryId])
+  @@fulltext([title]) 
 }
 
 model Attachment {
@@ -95,6 +97,7 @@ model UserProgress {
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+   @@unique([userId,chapterId])
 }
 
 model Purchase {
@@ -108,6 +111,7 @@ model Purchase {
   updatedAt   DateTime @updatedAt
 
   @@index([courseId])
+  @@unique([userId,courseId])
 }
 
 

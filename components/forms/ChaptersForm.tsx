@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
 import { Chapter, Course } from "@prisma/client";
 import { Input } from "../ui/input";
 import ChaptersList from "../lists/ChaptersList";
-import { channel } from "diagnostics_channel";
+
 
 interface ChaptersFormProps {
   initialData: Course & { chapters: Chapter[] };
@@ -80,20 +80,15 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     router.push(`/teacher/courses/${courseId}/chapters/${id}`);
   };
 
-const publishedChapters = initialData.chapters.filter(
-  (chapter) => chapter.isPublished === true
-).length;
-
-
-
-
+  const publishedChapters = initialData.chapters.filter(
+    (chapter) => chapter.isPublished === true
+  ).length;
 
   return (
     <div
       className={cn(
         " relative mt-6 border bg-slate-100 rounded-md p-4",
-        publishedChapters > 0 &&
-          "bg-green-100"
+        publishedChapters > 0 && "bg-green-100"
       )}
     >
       {isUpdating && (
