@@ -1,6 +1,6 @@
 import { getProgress } from "@/actions/get-progress";
-import CourseNavbar from "@/components/CourseNavbar";
-import CourseSidebar from "@/components/CourseSidebar";
+import CourseNavbar from "@/components/navbars/CourseNavbar";
+import CourseSidebar from "@/components/navbars/CourseSidebar";
 import { db } from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";

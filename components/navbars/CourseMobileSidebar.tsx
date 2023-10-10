@@ -12,7 +12,10 @@ interface CourseMobileNavbarProps {
   progressCount: number;
 }
 
-const CourseMobileSidebar = ({course,progressCount} :  CourseMobileNavbarProps) => {
+const CourseMobileSidebar = ({
+  course,
+  progressCount,
+}: CourseMobileNavbarProps) => {
   return (
     <Sheet>
       <SheetTrigger className="md:hidden pr-4 hover:opacity-75 transition">

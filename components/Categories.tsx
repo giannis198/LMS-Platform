@@ -18,26 +18,28 @@ interface CategoriesProps {
 }
 
 const iconMap: Record<Category["name"], IconType> = {
-  "Music": FcMusic,
-  "Photography": FcOldTimeCamera,
-  "Fitness": FcSportsMode,
-  "Accounting": FcSalesPerformance,
+  Music: FcMusic,
+  Photography: FcOldTimeCamera,
+  Fitness: FcSportsMode,
+  Accounting: FcSalesPerformance,
   "Computer Science": FcMultipleDevices,
-  "Filming": FcFilmReel,
-  "Engineering": FcEngineering,
+  Filming: FcFilmReel,
+  Engineering: FcEngineering,
 };
 
 const Categories = ({ items }: CategoriesProps) => {
-  return <div className="flex items-center gap-x-2 overflow-x-auto pb-2">
-    {items.map((category) => (
-      <CategoryItem
-      key={category.id}
-      label={category.name}
-      icon={iconMap[category.name]}
-      value={category.id}
-      />
-    ))}
-  </div>;
+  return (
+    <div className="flex items-center gap-x-2 overflow-x-auto pb-2">
+      {items.map((category) => (
+        <CategoryItem
+          key={category.id}
+          label={category.name}
+          icon={iconMap[category.name]}
+          value={category.id}
+        />
+      ))}
+    </div>
+  );
 };
 
 export default Categories;

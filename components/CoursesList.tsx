@@ -1,7 +1,6 @@
 import { Category, Course } from "@prisma/client";
 import { CourseCard } from "./CourseCard";
 
-
 type CourseWithProgressWithCategory = Course & {
   category: Category | null;
   chapters: { id: string }[];

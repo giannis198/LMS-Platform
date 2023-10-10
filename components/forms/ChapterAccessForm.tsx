@@ -22,7 +22,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Chapter } from "@prisma/client";
 
-
 interface ChapterAccessFormProps {
   initialData: Chapter;
   courseId: string;
