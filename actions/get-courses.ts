@@ -23,12 +23,11 @@ export const getCourses = async ({
   try {
     const courses = await db.course.findMany({
       where: {
-        userId,
+        isPublished: true,
         title: {
           contains: title,
         },
         categoryId,
-        isPublished: true,
       },
       include: {
         category: true,
@@ -40,7 +39,7 @@ export const getCourses = async ({
             id: true,
           },
         },
-        purcases: {
+        purchases: {
           where: {
             userId,
           },
@@ -54,12 +53,13 @@ export const getCourses = async ({
     const coursesWithProgress: CourseWithProgressWithCategory[] =
       await Promise.all(
         courses.map(async (course) => {
-          if (course.purcases.length === 0) {
+          if (course.purchases.length === 0) {
             return {
               ...course,
               progress: null,
             };
           }
+
           const progressPercentage = await getProgress(userId, course.id);
 
           return {

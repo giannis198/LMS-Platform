@@ -1,6 +1,7 @@
 import { getChapter } from "@/actions/get-chapter";
 import { Banner } from "@/components/Banner";
 import { CourseEnrollButton } from "@/components/CourseEnrollButton";
+import CourseProgressButton from "@/components/CourseProgressButton";
 
 import { Preview } from "@/components/Preview";
 import { VideoPlayer } from "@/components/VideoPlayer";
@@ -8,7 +9,7 @@ import { VideoPlayer } from "@/components/VideoPlayer";
 import { Separator } from "@/components/ui/separator";
 
 import { auth } from "@clerk/nextjs";
-import MuxPlayer from "@mux/mux-player-react";
+
 import { File } from "lucide-react";
 import { redirect } from "next/navigation";
 
@@ -72,13 +73,12 @@ const ChapterIdPage = async ({ params }: ChapterIdPageProps) => {
           <div className="p-4 flex flex-col md:flex-row items-center justify-between">
             <h2 className="text-2xl font-semibold mb-2">{chapter.title}</h2>
             {purchase ? (
-              "Progress"
-              // <CourseProgressButton
-              //   chapterId={params.chapterId}
-              //   courseId={params.courseId}
-              //   nextChapterId={nextChapter?.id}
-              //   isCompleted={!!userProgress?.isCompleted}
-              // />
+              <CourseProgressButton
+                chapterId={params.chapterId}
+                courseId={params.courseId}
+                nextChapterId={nextChapter?.id}
+                isCompleted={!!userProgress?.isCompleted}
+              />
             ) : (
               <CourseEnrollButton
                 courseId={params.courseId}

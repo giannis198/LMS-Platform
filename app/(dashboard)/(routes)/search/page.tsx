@@ -1,3 +1,4 @@
+
 import { getCourses } from "@/actions/get-courses";
 import Categories from "@/components/Categories";
 import CoursesList from "@/components/CoursesList";
@@ -17,6 +18,8 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const { userId } = auth();
 
   if (!userId) return redirect("/");
+
+  
   const categories = await db.category.findMany({
     orderBy: {
       name: "asc", 
